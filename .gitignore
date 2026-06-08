@@ -1,0 +1,17 @@
+# Xcode / generated
+*.xcodeproj
+*.xcworkspace
+xcuserdata/
+DerivedData/
+build/
+*.ipa
+*.dSYM.zip
+
+# Engine artifacts (built by scripts/build-libbox.sh — large, not committed)
+Frameworks/
+*.xcframework
+engine-src/
+
+# macOS / misc
+.DS_Store
+*.swp

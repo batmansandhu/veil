@@ -1,0 +1,5 @@
+// Fill these in on your Mac, or set DEVELOPMENT_TEAM in project.yml.
+// Apple requires an ORGANIZATION developer account for VPN apps (Guideline 5.4).
+DEVELOPMENT_TEAM =
+// App Group must match across app + extension + entitlements (see *.entitlements).
+APP_GROUP_ID = group.space.gigapro.veil

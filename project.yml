@@ -1,0 +1,68 @@
+# XcodeGen spec for Veil — generate the .xcodeproj on a Mac with:  xcodegen generate
+# Why XcodeGen: a project.pbxproj is impractical to hand-author/review; this declarative
+# spec is the source of truth and produces a correct project on the Mac.
+name: Veil
+options:
+  bundleIdPrefix: space.gigapro.veil
+  deploymentTarget:
+    iOS: "16.0"
+  createIntermediateGroups: true
+configs:
+  Debug: debug
+  Release: release
+
+schemes:
+  Veil:
+    build:
+      targets:
+        Veil: all
+    run:
+      config: Debug
+    archive:
+      config: Release
+
+settings:
+  base:
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    SWIFT_VERSION: "5.9"
+    # Set your Apple Developer TEAM id here (or via Config/Veil.xcconfig)
+    DEVELOPMENT_TEAM: ""
+    CODE_SIGN_STYLE: Automatic
+
+targets:
+  # ----------------------------------------------------------------- main app
+  Veil:
+    type: application
+    platform: iOS
+    sources:
+      - path: App
+      - path: Shared
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: space.gigapro.veil
+        INFOPLIST_FILE: App/Info.plist
+        CODE_SIGN_ENTITLEMENTS: App/Veil.entitlements
+        GENERATE_INFOPLIST_FILE: NO
+    dependencies:
+      - target: PacketTunnel
+        embed: true   # extensions must be embedded in the app bundle
+
+  # ------------------------------------------------- packet tunnel extension
+  PacketTunnel:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: PacketTunnel
+      - path: Shared
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: space.gigapro.veil.tunnel
+        INFOPLIST_FILE: PacketTunnel/Info.plist
+        CODE_SIGN_ENTITLEMENTS: PacketTunnel/PacketTunnel.entitlements
+        GENERATE_INFOPLIST_FILE: NO
+    # When the Libbox engine is built (scripts/build-libbox.sh), drop
+    # Libbox.xcframework into ./Frameworks and uncomment:
+    # dependencies:
+    #   - framework: Frameworks/Libbox.xcframework
+    #     embed: true
