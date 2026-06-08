@@ -1,0 +1,35 @@
+name: build
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build Veil (iOS Simulator, unsigned)
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Show Xcode version
+        run: xcodebuild -version
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate Xcode project
+        run: xcodegen generate
+
+      - name: Build app (engine stub, no signing)
+        run: |
+          xcodebuild build \
+            -project Veil.xcodeproj \
+            -scheme Veil \
+            -sdk iphonesimulator \
+            -destination 'generic/platform=iOS Simulator' \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO
+
+# NOTE: This builds the SwiftUI app + PacketTunnel extension with the LibboxEngine STUB
+# (no Libbox.xcframework). It proves the scaffold compiles on a real Mac. A second job to
+# build the GPLv3 libbox xcframework (gomobile) and the real engine can be added later.
