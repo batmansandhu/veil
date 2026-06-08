@@ -8,7 +8,7 @@ on:
 jobs:
   build:
     name: Build Veil (iOS Simulator, unsigned)
-    runs-on: macos-14
+    runs-on: macos-15   # Xcode 16+; reads XcodeGen's project format 77 (macos-14 has only Xcode 15.4)
     steps:
       - uses: actions/checkout@v4
 
